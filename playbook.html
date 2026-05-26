@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Integration Playbook — Powered by Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#1A1916;--surface:#221E1B;--surface-2:#252119;--border:#2E2A26;--coral:#CC6A48;--cream:#F0EBE2;--muted:#8A8580;--muted-2:#5C5854;--sage:#6E7D50;--steel:#5C87AF;--teal:#9AADA7}
+body{background:var(--bg);color:var(--cream);font-family:'Inter',-apple-system,sans-serif;font-size:16px;line-height:1.6;min-height:100vh}
+.gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1.5rem;text-align:center}
+.gate.hidden{display:none}
+.badge{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:0.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--muted);margin-bottom:2rem}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--coral)}
+.gate h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,5.5vw,3.4rem);font-weight:400;color:var(--cream);line-height:1.15;max-width:680px;margin-bottom:1rem}
+.gate h1 em{color:var(--coral);font-style:normal}
+.gate>p{font-size:16px;color:var(--muted);max-width:460px;margin-bottom:2.5rem;line-height:1.65}
+.gate-form{display:flex;gap:8px;max-width:420px;width:100%;margin-bottom:0.75rem}
+.gate-form input{flex:1;background:var(--surface);border:0.5px solid var(--border);border-radius:6px;padding:13px 16px;color:var(--cream);font-size:14px;font-family:inherit;outline:none;transition:border-color 0.2s}
+.gate-form input:focus{border-color:var(--coral)}
+.gate-form input::placeholder{color:var(--muted-2)}
+.btn{background:var(--coral);border:none;border-radius:6px;padding:13px 22px;color:var(--cream);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:opacity 0.2s;white-space:nowrap}
+.btn:hover{opacity:0.88}
+.gate-note{font-size:12px;color:var(--muted-2)}
+.gate-error{font-size:12px;color:var(--coral);margin-top:8px;display:none}
+.gate-stats{display:flex;gap:2rem;margin-top:3rem;justify-content:center}
+.stat{text-align:center}
+.stat-num{font-size:1.4rem;font-weight:500;color:var(--cream);display:block}
+.stat-label{font-size:12px;color:var(--muted-2)}
+.content{display:none}.content.visible{display:block}
+.progress{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:0.5px solid var(--border)}
+.progress-inner{max-width:860px;margin:0 auto;display:flex;height:50px;padding:0 2rem}
+.progress-tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted-2);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;text-align:center;gap:6px}
+.progress-tab:hover{color:var(--muted)}
+.progress-tab.active{color:var(--coral);border-bottom-color:var(--coral)}
+.progress-tab.done{color:var(--muted);border-bottom-color:var(--sage)}
+.tab-num{width:18px;height:18px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;background:var(--border);color:var(--muted-2)}
+.progress-tab.active .tab-num{background:rgba(204,106,72,0.2);color:var(--coral)}
+.progress-tab.done .tab-num{background:rgba(110,125,80,0.2);color:var(--sage)}
+.section{max-width:860px;margin:0 auto;padding:4rem 2rem 3rem}
+.section-divider{border:none;border-top:0.5px solid var(--border);max-width:860px;margin:0 auto}
+.phase-header{margin-bottom:1.5rem}
+.phase-tag{display:inline-block;font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;margin-bottom:1rem;letter-spacing:0.04em}
+.tag-coral{background:rgba(204,106,72,0.12);color:var(--coral)}
+.tag-sage{background:rgba(110,125,80,0.12);color:var(--sage)}
+.tag-steel{background:rgba(92,135,175,0.12);color:var(--steel)}
+.tag-teal{background:rgba(154,173,167,0.12);color:var(--teal)}
+.phase-title{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:400;color:var(--cream);line-height:1.2;margin-bottom:0.4rem}
+.phase-sub{font-size:13px;color:var(--muted-2);letter-spacing:0.02em}
+.phase-hook{border-left:2px solid var(--coral);padding:1rem 1.25rem;margin-bottom:2rem;background:rgba(204,106,72,0.04);border-radius:0 6px 6px 0}
+.phase-hook p{font-size:15px;color:var(--cream);line-height:1.8;font-style:italic}
+.phase-hook.sage{border-left-color:var(--sage);background:rgba(110,125,80,0.04)}
+.phase-hook.steel{border-left-color:var(--steel);background:rgba(92,135,175,0.04)}
+.phase-hook.teal{border-left-color:var(--teal);background:rgba(154,173,167,0.04)}
+.cliff{border:0.5px solid rgba(204,106,72,0.3);border-radius:10px;padding:1.75rem;margin-top:2.5rem;background:rgba(204,106,72,0.04);position:relative;overflow:hidden}
+.cliff::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--coral) 0%,transparent 70%)}
+.cliff-label{font-size:10px;font-weight:500;color:var(--coral);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem}
+.cliff-title{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:var(--cream);line-height:1.3;margin-bottom:0.6rem}
+.cliff-text{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:1.25rem}
+.cliff-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:0.5px solid rgba(204,106,72,0.5);border-radius:5px;padding:9px 18px;color:var(--coral);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 0.2s}
+.cliff-btn:hover{background:rgba(204,106,72,0.08);border-color:var(--coral)}
+.cliff-arrow{display:inline-block;transition:transform 0.2s}
+.cliff-btn:hover .cliff-arrow{transform:translateX(4px)}
+.step{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1rem}
+.step-label{font-size:11px;font-weight:500;color:var(--coral);margin-bottom:0.5rem;letter-spacing:0.04em}
+.step h3{font-size:17px;font-weight:500;color:var(--cream);margin-bottom:0.75rem;line-height:1.3}
+.step p{font-size:14px;color:var(--muted);line-height:1.8}
+.step p+p{margin-top:0.75rem}
+.callout{background:rgba(204,106,72,0.07);border-left:2px solid var(--coral);border-radius:0 6px 6px 0;padding:1rem 1.25rem;margin-top:1rem}
+.callout p{font-size:13px;color:var(--muted);line-height:1.7}
+.callout strong{color:var(--cream);font-weight:500}
+.callout-sage{background:rgba(110,125,80,0.07);border-left-color:var(--sage)}
+.callout-steel{background:rgba(92,135,175,0.07);border-left-color:var(--steel)}
+.num-list{list-style:none;margin-top:1rem}
+.num-list li{display:flex;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--border);font-size:14px;color:var(--muted);line-height:1.6}
+.num-list li:last-child{border-bottom:none}
+.num-list li strong{color:var(--cream);font-weight:500;display:block;margin-bottom:2px}
+.num-circle{min-width:22px;height:22px;width:22px;border-radius:50%;background:rgba(204,106,72,0.15);color:var(--coral);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;margin-top:2px;flex-shrink:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.grid-card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:8px;padding:1rem}
+.grid-card-tag{font-size:10px;color:var(--coral);font-weight:500;margin-bottom:4px;letter-spacing:0.04em}
+.grid-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.grid-card strong{color:var(--cream);font-weight:500}
+.formula{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.formula-row{display:flex;align-items:flex-start;gap:12px;background:var(--surface-2);border:0.5px solid var(--border);border-radius:6px;padding:10px 12px}
+.formula-letter{min-width:24px;width:24px;height:24px;border-radius:4px;background:var(--coral);color:var(--cream);font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.formula-letter.sage{background:var(--sage)}
+.formula-letter.steel{background:var(--steel)}
+.formula-letter.teal{background:var(--teal)}
+.formula-text strong{font-size:13px;font-weight:500;color:var(--cream);display:block;margin-bottom:2px}
+.formula-text span{font-size:12px;color:var(--muted)}
+.audit-list{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.audit-q{background:var(--surface-2);border:0.5px solid var(--border);border-radius:6px;padding:12px 14px;font-size:14px;color:var(--muted);line-height:1.6}
+.audit-q span{color:var(--cream);font-weight:500}
+.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.25rem;margin-bottom:2.5rem}
+.module-card{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:1rem;position:relative;overflow:hidden}
+.module-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);opacity:0.4}
+.module-card-tag{font-size:10px;color:var(--teal);font-weight:500;margin-bottom:6px;letter-spacing:0.04em}
+.module-card h4{font-size:13px;font-weight:500;color:var(--cream);margin-bottom:4px}
+.module-card p{font-size:12px;color:var(--muted);line-height:1.5}
+.cta-section{max-width:860px;margin:0 auto;padding:3rem 2rem 5rem;text-align:center}
+.cta-section h2{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem}
+.cta-section>p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.7}
+.cta-btn{display:inline-block;background:var(--coral);color:var(--cream);font-size:15px;font-weight:500;font-family:inherit;padding:14px 32px;border-radius:6px;border:none;cursor:pointer;text-decoration:none;transition:opacity 0.2s}
+.cta-btn:hover{opacity:0.88}
+.cta-sub{font-size:12px;color:var(--muted-2);margin-top:1rem}
+.footer{text-align:center;padding:1.5rem;font-size:12px;color:var(--muted-2);border-top:0.5px solid var(--border)}
+.footer span{color:var(--coral)}
+@media(max-width:600px){.grid2,.module-grid{grid-template-columns:1fr}.gate h1{font-size:1.9rem}.gate-form{flex-direction:column}.gate-stats{gap:1.25rem}.progress-tab span:not(.tab-num){display:none}.phase-title{font-size:1.6rem}.section{padding:3rem 1.25rem 2.5rem}}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <div class="badge"><div class="badge-dot"></div>Powered by Claude AI</div>
+  <h1>The business owner's guide to <em>running on AI</em></h1>
+  <p>A plain-language playbook for integrating Claude into any business or career. No tech background required. Results in week one.</p>
+  <div class="gate-form">
+    <input type="email" id="emailInput" placeholder="Enter your work email" autocomplete="email">
+    <button class="btn" onclick="unlockContent()">Get free access</button>
+  </div>
+  <div class="gate-error" id="gateError">Enter a valid email to continue.</div>
+  <p class="gate-note">Free. No credit card. No spam.</p>
+  <div class="gate-stats">
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">phases</span></div>
+    <div class="stat"><span class="stat-num">20 min</span><span class="stat-label">to read</span></div>
+    <div class="stat"><span class="stat-num">Week 1</span><span class="stat-label">first results</span></div>
+  </div>
+</div>
+<div class="content" id="content">
+  <nav class="progress" aria-label="Guide progress">
+    <div class="progress-inner">
+      <div class="progress-tab active" id="tab-1" onclick="scrollToSection('phase1')"><span class="tab-num">1</span><span>Foundation</span></div>
+      <div class="progress-tab" id="tab-2" onclick="scrollToSection('phase2')"><span class="tab-num">2</span><span>First wins</span></div>
+      <div class="progress-tab" id="tab-3" onclick="scrollToSection('phase3')"><span class="tab-num">3</span><span>Build it in</span></div>
+      <div class="progress-tab" id="tab-4" onclick="scrollToSection('phase4')"><span class="tab-num">4</span><span>Go deeper</span></div>
+    </div>
+  </nav>
+  <section class="section" id="phase1">
+    <div class="phase-header">
+      <div class="phase-tag tag-coral">Phase 1 — Foundation</div>
+      <h2 class="phase-title">Start here. Not with the tool.</h2>
+      <p class="phase-sub">5 min read &nbsp;·&nbsp; Do this before you open Claude</p>
+    </div>
+    <div class="phase-hook"><p>Most people spend their first week with Claude doing one thing: asking it questions they could Google. They get mediocre output. They conclude AI isn't for them. This phase is why they're wrong — and what they skipped.</p></div>
+    <div class="step">
+      <div class="step-label">Step 1.1</div>
+      <h3>What Claude actually is</h3>
+      <p>Not a chatbot. Not a search engine. Claude is a thinking partner — one that reads, writes, analyses, and executes tasks you'd normally spend hours on.</p>
+      <p>You don't need to understand how it works. You need to understand what to give it.</p>
+      <div class="callout"><p><strong>The mental model that changes everything:</strong> Claude is a highly capable person who just walked into your business today. Smart. Fast. Ready to work. But they need context. The more you give them, the better the output.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 1.2</div>
+      <h3>The time audit — find your first five jobs</h3>
+      <p>Before you touch the tool, map the problem. Where are your hours actually going? Repetitive tasks. Information-heavy tasks. Writing tasks. Those are Claude's first jobs — not the creative decisions, not the relationship work, not the judgment calls. The grind.</p>
+      <p>Answer these three questions and write them down:</p>
+      <div class="audit-list">
+        <div class="audit-q"><span>Question 1 —</span> What takes you more than 2 hours a week that doesn't actually require you personally?</div>
+        <div class="audit-q"><span>Question 2 —</span> Where do you spend time writing things that follow a pattern — emails, reports, proposals, posts?</div>
+        <div class="audit-q"><span>Question 3 —</span> What information do you regularly process — reading, summarising, pulling key points from documents?</div>
+      </div>
+      <div class="callout"><p>What you just wrote down is your AI roadmap. Every task you named is a candidate for Claude. You'll test them in Phase 2.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 1.3</div>
+      <h3>Four things to know before you start</h3>
+      <div class="grid2">
+        <div class="grid-card"><div class="grid-card-tag">Know this</div><p><strong>Claude forgets between conversations.</strong> Every new chat starts fresh. If context matters, paste it in at the start. Build this into your habit from day one.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">Know this</div><p><strong>Output quality follows input quality.</strong> A vague prompt gets a vague answer. A specific prompt with context gets work you can actually use.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">Know this</div><p><strong>You are the editor, not the passenger.</strong> Claude drafts. You decide. Never send, publish, or act on output you haven't read and approved.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">Know this</div><p><strong>Iteration is the process.</strong> First output rarely nails it. Ask Claude to revise, sharpen, or shift angle. That back-and-forth is the work.</p></div>
+      </div>
+    </div>
+    <div class="cliff">
+      <div class="cliff-label">Up next &nbsp;·&nbsp; Phase 2</div>
+      <div class="cliff-title">You've mapped the problem. Now it's time to run it.</div>
+      <div class="cliff-text">That audit you just filled in? Those are your first jobs for Claude. Phase 2 is where the theory ends — and where most people get their first real result in under 30 minutes.</div>
+      <button class="cliff-btn" onclick="scrollToSection('phase2')">Continue to Phase 2 <span class="cliff-arrow">→</span></button>
+    </div>
+  </section>
+  <hr class="section-divider">
+  <section class="section" id="phase2">
+    <div class="phase-header">
+      <div class="phase-tag tag-sage">Phase 2 — First wins</div>
+      <h2 class="phase-title">Five tasks. This week.</h2>
+      <p class="phase-sub">5 min read &nbsp;·&nbsp; Run one task from your audit all the way through</p>
+    </div>
+    <div class="phase-hook sage"><p>Your list is ready. Claude is open. This is the part where the abstract becomes real — and where most people are surprised by how fast the first result lands.</p></div>
+    <div class="step">
+      <div class="step-label">Step 2.1</div>
+      <h3>The five tasks to hand Claude immediately</h3>
+      <ul class="num-list">
+        <li><div class="num-circle">1</div><div><strong>Research and summarising</strong> Paste in a report, article, competitor website, or document. Ask Claude to pull the key points, find the gaps, or tell you what matters. What used to take 90 minutes takes 5.</div></li>
+        <li><div class="num-circle">2</div><div><strong>First drafts</strong> Give Claude the context, the recipient, the goal, and the key points. Let it draft. You edit. The blank page problem disappears.</div></li>
+        <li><div class="num-circle">3</div><div><strong>Editing and sharpening</strong> Paste in something you've already written. Ask Claude to tighten it, make it clearer, or adjust the tone. Faster than rereading it yourself three times.</div></li>
+        <li><div class="num-circle">4</div><div><strong>Sense-making from data</strong> Paste a spreadsheet or report. Ask questions in plain language — "What's the trend here?" "Where are we losing?" Claude reads the numbers. You make the call.</div></li>
+        <li><div class="num-circle">5</div><div><strong>Meeting and call prep</strong> Tell Claude who you're meeting and what you're trying to achieve. Get a briefing note, an agenda, and the three questions you should be asking — in under two minutes.</div></li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 2.2</div>
+      <h3>How to write a prompt that actually works</h3>
+      <p>Most people prompt Claude like a search engine. One line. Vague. Then they're disappointed. Claude works when you treat it like a capable person who just started — give it context, a role, a goal, and what good looks like.</p>
+      <p>Use this four-part structure every time:</p>
+      <div class="formula">
+        <div class="formula-row"><div class="formula-letter">R</div><div class="formula-text"><strong>Role — tell Claude who it is</strong><span>"You are a senior marketing strategist working with a professional services firm."</span></div></div>
+        <div class="formula-row"><div class="formula-letter sage">A</div><div class="formula-text"><strong>Action — tell Claude what to do</strong><span>"Write a follow-up email to a prospect who went quiet after our initial proposal."</span></div></div>
+        <div class="formula-row"><div class="formula-letter steel">C</div><div class="formula-text"><strong>Context — give it what it needs</strong><span>"The prospect is a CFO at a 200-person firm. 6-month consulting engagement. Tone: confident, not desperate."</span></div></div>
+        <div class="formula-row"><div class="formula-letter teal">E</div><div class="formula-text"><strong>Example — show it what good looks like</strong><span>"Here's an email I sent before that worked well: [paste it]. Match the voice."</span></div></div>
+      </div>
+      <div class="callout callout-sage"><p>You don't need all four every time. But the more you include, the less back-and-forth you need. <strong>Context is the multiplier.</strong></p></div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 2.3</div>
+      <h3>Your first 30 minutes with Claude</h3>
+      <p>Don't explore. Execute. Pick one task from your audit. Run it all the way through.</p>
+      <ul class="num-list">
+        <li><div class="num-circle">1</div><div><strong>Open claude.ai</strong> Create a free account if you don't have one. You're one conversation away from your first result.</div></li>
+        <li><div class="num-circle">2</div><div><strong>Pick the most painful task from your audit</strong> Not the most interesting. The most time-consuming. That's where you'll feel the difference fastest.</div></li>
+        <li><div class="num-circle">3</div><div><strong>Use the RACE structure</strong> Write your prompt with Role, Action, Context, and an Example if you have one.</div></li>
+        <li><div class="num-circle">4</div><div><strong>Review and refine</strong> Don't accept the first version. Ask Claude to make it more direct, shorter, or adjusted for a specific person. One or two follow-up prompts is normal.</div></li>
+        <li><div class="num-circle">5</div><div><strong>Use it this week</strong> Send the email. Publish the post. Present the summary. The habit only forms when you close the loop with real output.</div></li>
+      </ul>
+    </div>
+    <div class="cliff">
+      <div class="cliff-label">Up next &nbsp;·&nbsp; Phase 3</div>
+      <div class="cliff-title">One win is a lucky break. A system is a competitive advantage.</div>
+      <div class="cliff-text">Most people stop here. They use Claude occasionally, get decent results, and never go further. The people who actually change how they work don't just use Claude — they build it in. That's what Phase 3 is for.</div>
+      <button class="cliff-btn" onclick="scrollToSection('phase3')">Continue to Phase 3 <span class="cliff-arrow">→</span></button>
+    </div>
+  </section>
+  <hr class="section-divider">
+  <section class="section" id="phase3">
+    <div class="phase-header">
+      <div class="phase-tag tag-steel">Phase 3 — Build it in</div>
+      <h2 class="phase-title">Make it a system, not a session.</h2>
+      <p class="phase-sub">5 min read &nbsp;·&nbsp; Turn occasional wins into a repeatable advantage</p>
+    </div>
+    <div class="phase-hook steel"><p>Using Claude once is a shortcut. Building it into your workflow is a competitive advantage. There's a significant difference between the two — and you're about to feel it.</p></div>
+    <div class="step">
+      <div class="step-label">Step 3.1</div>
+      <h3>Build your personal AI playbook</h3>
+      <p>When a prompt works, save it. Name it. A playbook is a living document of your best prompts — refined, reliable, and already proven for your specific context. When you need it next week, it's there.</p>
+      <p>Start with three categories:</p>
+      <div class="grid2">
+        <div class="grid-card"><div class="grid-card-tag">Category 1</div><p><strong>Communication prompts</strong><br>Email drafts, follow-ups, client updates, difficult conversations. The ones you write most often.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">Category 2</div><p><strong>Research prompts</strong><br>Summarise, compare, extract key points, sense-check data. The prompts that save you reading time.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">Category 3</div><p><strong>Creation prompts</strong><br>Posts, reports, proposals, presentations. The prompts that eliminate the blank page.</p></div>
+        <div class="grid-card"><div class="grid-card-tag">The rule</div><p><strong>If a prompt works twice, it earns a spot.</strong> By month three, you'll have a system that makes you faster every single week.</p></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 3.2</div>
+      <h3>What not to automate</h3>
+      <p>Knowing where Claude belongs is as important as knowing how to use it. Some things should stay with you.</p>
+      <div class="callout"><p><strong>Don't hand Claude:</strong> Decisions that require human judgment. Performance conversations. Strategic calls. Relationship-defining moments. Anything going out under your name that you haven't read first.</p></div>
+      <div class="callout callout-sage" style="margin-top:0.75rem"><p><strong>Claude amplifies your judgment. It doesn't replace it.</strong> The goal is to take the grind off your plate so you can bring more of yourself to the work that actually requires you.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-label">Step 3.3</div>
+      <h3>The 30-day consistency habit</h3>
+      <p>One task per day for 30 days. A practice, not a programme. This is how any skill builds — repetition, not intensity.</p>
+      <ul class="num-list">
+        <li><div class="num-circle">1</div><div><strong>Days 1–10: Experiment</strong> Try Claude on different task types from your audit. Some will land immediately. Some won't. Both tell you something useful.</div></li>
+        <li><div class="num-circle">2</div><div><strong>Days 11–20: Systematise</strong> The tasks that work — build prompts for them. Add them to your playbook. Notice where you reach for Claude without thinking. That's the habit forming.</div></li>
+        <li><div class="num-circle">3</div><div><strong>Days 21–30: Expand</strong> Pick one new area you haven't tried. Apply what you've learned. By day 30, you'll have found 3–5 things Claude does better than you expected.</div></li>
+      </ul>
+      <div class="callout callout-steel"><p><strong>The compound effect is real.</strong> Each prompt you save builds on the last. People who commit to 30 days come out the other side running a noticeably different business.</p></div>
+    </div>
+    <div class="cliff">
+      <div class="cliff-label">Up next &nbsp;·&nbsp; Phase 4</div>
+      <div class="cliff-title">Your playbook is started. The habit is mapped. Now the ceiling shows up.</div>
+      <div class="cliff-text">There's a limit to how far you can go building alone. Phase 4 is where this becomes a sustained practice — with real workflows, a growing library, and people building alongside you.</div>
+      <button class="cliff-btn" onclick="scrollToSection('phase4')">Continue to Phase 4 <span class="cliff-arrow">→</span></button>
+    </div>
+  </section>
+  <hr class="section-divider">
+  <section class="section" id="phase4">
+    <div class="phase-header">
+      <div class="phase-tag tag-teal">Phase 4 — Go deeper</div>
+      <h2 class="phase-title">The foundation is set. Now go further.</h2>
+      <p class="phase-sub">What's waiting for you in the community</p>
+    </div>
+    <div class="phase-hook teal"><p>The foundation is set. The wins are real. You're already ahead of most of your industry. What comes next isn't more information — it's the right room.</p></div>
+    <div class="step">
+      <div class="step-label">Inside the community</div>
+      <h3>The free tutorial library</h3>
+      <p>Step-by-step tutorials. Real-world workflows from business owners and professionals actually running on AI. A library that grows every week — built around what people are actually trying to do, not what sounds impressive on a sales page.</p>
+      <div class="module-grid">
+        <div class="module-card"><div class="module-card-tag">Module 01</div><h4>Advanced prompting</h4><p>Beyond RACE — chaining prompts, few-shot examples, and system instructions for consistent output.</p></div>
+        <div class="module-card"><div class="module-card-tag">Module 02</div><h4>Workflow automation</h4><p>Build repeatable AI workflows for your specific business function — sales, ops, marketing, finance.</p></div>
+        <div class="module-card"><div class="module-card-tag">Module 03</div><h4>Team adoption</h4><p>How to introduce AI to your team without resistance. Building shared playbooks and standards.</p></div>
+        <div class="module-card"><div class="module-card-tag">Module 04</div><h4>Content at scale</h4><p>Build a content system with Claude — from idea to published, faster than a solo creator has any right to be.</p></div>
+        <div class="module-card"><div class="module-card-tag">Module 05</div><h4>Data and reporting</h4><p>Turn spreadsheets, reports, and raw data into insight without needing to know a single formula.</p></div>
+        <div class="module-card"><div class="module-card-tag">Module 06</div><h4>AI without the risk</h4><p>Where to draw the line. Data privacy, accuracy, and the guardrails every business needs in place.</p></div>
+      </div>
+    </div>
+  </section>
+  <div class="cta-section">
+    <h2>Ready to go deeper?</h2>
+    <p>Join the free community. Full tutorial library, real workflows, and a network of business owners and professionals building on AI — together.</p>
+    <a href="https://www.skool.com/rachels-ai-head-quarters-9303" class="cta-btn">Join the community — it's free</a>
+    <p class="cta-sub">Free access. No credit card. No catch.</p>
+  </div>
+  <div style="background:rgba(204,106,72,0.06);border-top:0.5px solid rgba(204,106,72,0.2);padding:3rem 2rem;text-align:center">
+    <div style="max-width:520px;margin:0 auto">
+      <div class="cliff-label" style="margin-bottom:0.75rem">Next level</div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem">Want it done for you?</h2>
+      <p style="font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:2rem">You've read the playbook. Now let's map your business specifically. The AI Audit is a focused 60-minute session where we identify exactly where AI will have the biggest impact on how you work. You leave with clarity. We leave with everything we need to build your system.</p>
+      <a href="https://niscallyai.netlify.app/" class="cta-btn">Book your AI Audit — £97</a>
+      <p class="cta-sub">60 minutes &nbsp;·&nbsp; Done-for-you AI setup &nbsp;·&nbsp; Niscally AI</p>
+    </div>
+  </div>
+  <footer class="footer">Built with <span>Claude AI</span> &nbsp;·&nbsp; claude.ai &nbsp;·&nbsp; Free resource — share it freely.</footer>
+</div>
+<script>
+function unlockContent(){var email=document.getElementById('emailInput').value.trim();var err=document.getElementById('gateError');var re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;if(!re.test(email)){err.style.display='block';return;}err.style.display='none';document.getElementById('gate').classList.add('hidden');var c=document.getElementById('content');c.classList.add('visible');c.scrollIntoView({behavior:'smooth'});initObserver();}
+document.getElementById('emailInput').addEventListener('keydown',function(e){if(e.key==='Enter')unlockContent();});
+function scrollToSection(id){var el=document.getElementById(id);if(el){var top=el.getBoundingClientRect().top+window.scrollY-52-16;window.scrollTo({top:top,behavior:'smooth'});}}
+function setActiveTab(n){for(var i=1;i<=4;i++){var t=document.getElementById('tab-'+i);t.classList.remove('active','done');if(i<n)t.classList.add('done');else if(i===n)t.classList.add('active');}}
+function initObserver(){var sections=[{el:document.getElementById('phase1'),tab:1},{el:document.getElementById('phase2'),tab:2},{el:document.getElementById('phase3'),tab:3},{el:document.getElementById('phase4'),tab:4}];var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var found=sections.find(function(s){return s.el===e.target;});if(found)setActiveTab(found.tab);}});},{root:null,rootMargin:'-50px 0px -50% 0px',threshold:0});sections.forEach(function(s){obs.observe(s.el);});}
+</script>
+</body>
+</html>

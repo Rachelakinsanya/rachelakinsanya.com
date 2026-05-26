@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Integration Tracker — Your Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#1A1916;--surface:#221E1B;--surface-2:#252119;--border:#2E2A26;--coral:#CC6A48;--cream:#F0EBE2;--muted:#8A8580;--muted-2:#5C5854;--sage:#6E7D50;--steel:#5C87AF;--teal:#9AADA7;--done:#6E7D50}
+body{background:var(--bg);color:var(--cream);font-family:'Inter',-apple-system,sans-serif;font-size:16px;line-height:1.6;min-height:100vh;padding-bottom:4rem}
+.header{max-width:740px;margin:0 auto;padding:3rem 2rem 2rem}
+.badge{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:0.5px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--muted);margin-bottom:1.5rem}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--coral)}
+.header h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:400;color:var(--cream);line-height:1.2;margin-bottom:0.5rem}
+.header p{font-size:14px;color:var(--muted);max-width:480px;line-height:1.7}
+.name-bar{max-width:740px;margin:0 auto;padding:0 2rem 2rem}
+.name-field{display:flex;align-items:center;gap:10px;background:var(--surface);border:0.5px solid var(--border);border-radius:7px;padding:10px 14px;max-width:340px}
+.name-field label{font-size:12px;color:var(--muted-2);white-space:nowrap}
+.name-field input{background:transparent;border:none;outline:none;color:var(--cream);font-family:inherit;font-size:14px;font-weight:500;flex:1}
+.name-field input::placeholder{color:var(--muted-2)}
+.overall{max-width:740px;margin:0 auto 0;padding:0 2rem 2.5rem}
+.overall-bar-wrap{background:var(--surface);border:0.5px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem}
+.overall-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+.overall-label{font-size:12px;color:var(--muted);font-weight:500}
+.overall-pct{font-size:1.4rem;font-weight:500;color:var(--cream);font-variant-numeric:tabular-nums}
+.bar-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--coral),#E08060);transition:width 0.4s ease;width:0%}
+.phase-dots{display:flex;justify-content:space-between;margin-top:0.75rem}
+.phase-dot{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--muted-2)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background 0.3s}
+.dot.active{background:var(--coral)}.dot.done{background:var(--sage)}
+.phases{max-width:740px;margin:0 auto;padding:0 2rem;display:flex;flex-direction:column;gap:1.25rem}
+.phase-card{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s}
+.phase-card.is-active{border-color:rgba(204,106,72,0.3)}
+.phase-card.is-done{border-color:rgba(110,125,80,0.3)}
+.phase-head{display:flex;align-items:center;gap:14px;padding:1.25rem 1.5rem;cursor:pointer;user-select:none}
+.phase-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0;transition:all 0.3s}
+.phase-icon.coral{background:rgba(204,106,72,0.15);color:var(--coral)}
+.phase-icon.sage{background:rgba(110,125,80,0.15);color:var(--sage)}
+.phase-icon.steel{background:rgba(92,135,175,0.15);color:var(--steel)}
+.phase-icon.teal{background:rgba(154,173,167,0.15);color:var(--teal)}
+.phase-icon.complete{background:rgba(110,125,80,0.2);color:var(--sage)}
+.phase-meta{flex:1}
+.phase-name{font-size:15px;font-weight:500;color:var(--cream);line-height:1.2}
+.phase-count{font-size:12px;color:var(--muted-2);margin-top:2px}
+.phase-chevron{color:var(--muted-2);font-size:18px;transition:transform 0.25s;flex-shrink:0}
+.phase-card.open .phase-chevron{transform:rotate(180deg)}
+.phase-mini-bar{height:2px;background:var(--border);margin:0 1.5rem}
+.phase-mini-fill{height:100%;border-radius:1px;width:0%;transition:width 0.3s ease}
+.phase-mini-fill.coral{background:var(--coral)}.phase-mini-fill.sage{background:var(--sage)}.phase-mini-fill.steel{background:var(--steel)}.phase-mini-fill.teal{background:var(--teal)}
+.checklist{padding:1rem 1.5rem 1.5rem;display:none;flex-direction:column;gap:2px}
+.phase-card.open .checklist{display:flex}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:10px 10px;border-radius:6px;cursor:pointer;transition:background 0.15s;user-select:none}
+.check-item:hover{background:rgba(255,255,255,0.03)}
+.check-box{width:20px;height:20px;border:1.5px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.2s;background:transparent}
+.check-item.checked .check-box{background:var(--sage);border-color:var(--sage)}
+.check-tick{opacity:0;color:white;font-size:11px;font-weight:700;transition:opacity 0.15s}
+.check-item.checked .check-tick{opacity:1}
+.check-text{font-size:14px;color:var(--muted);line-height:1.55;transition:color 0.2s}
+.check-text strong{color:var(--cream);font-weight:500;display:block;margin-bottom:1px}
+.check-item.checked .check-text{color:var(--muted-2)}
+.check-item.checked .check-text strong{color:var(--muted-2);text-decoration:line-through;text-decoration-color:var(--muted-2)}
+.phase-complete{display:none;margin:0 1.5rem 1.5rem;background:rgba(110,125,80,0.1);border:0.5px solid rgba(110,125,80,0.3);border-radius:7px;padding:1rem 1.1rem;align-items:center;gap:10px}
+.phase-complete.show{display:flex}
+.phase-complete-icon{font-size:18px;flex-shrink:0}
+.phase-complete p{font-size:13px;color:var(--sage);line-height:1.5}
+.phase-complete strong{color:var(--cream)}
+.win-section{max-width:740px;margin:2rem auto 0;padding:0 2rem}
+.win-card{background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1.5rem}
+.win-card h3{font-size:15px;font-weight:500;color:var(--cream);margin-bottom:0.4rem}
+.win-card p{font-size:13px;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+.win-input{width:100%;background:var(--surface-2);border:0.5px solid var(--border);border-radius:6px;padding:12px 14px;color:var(--cream);font-family:inherit;font-size:14px;resize:vertical;min-height:80px;outline:none;line-height:1.6;transition:border-color 0.2s}
+.win-input:focus{border-color:rgba(204,106,72,0.4)}
+.win-input::placeholder{color:var(--muted-2)}
+.win-input+.win-input{margin-top:0.75rem}
+@keyframes pop{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.celebrate{animation:pop 0.35s ease}
+.tracker-footer{max-width:740px;margin:3rem auto 0;padding:0 2rem;text-align:center;font-size:12px;color:var(--muted-2)}
+.tracker-footer span{color:var(--coral)}
+@media(max-width:600px){.header,.name-bar,.overall,.phases,.win-section{padding-left:1.25rem;padding-right:1.25rem}.header h1{font-size:1.6rem}.phase-mini-bar{margin:0 1rem}.checklist{padding:0.75rem 1rem 1.25rem}.phase-head{padding:1rem}.phase-complete{margin:0 1rem 1rem}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badge"><div class="badge-dot"></div>AI Integration Playbook</div>
+  <h1>Your progress tracker.</h1>
+  <p>Work through each phase of the playbook. Check off each step as you complete it. Every tick counts — this is your record of what you've built.</p>
+</div>
+<div class="name-bar">
+  <div class="name-field">
+    <label for="userName">Tracking for</label>
+    <input type="text" id="userName" placeholder="Your name" maxlength="40" oninput="saveName()">
+  </div>
+</div>
+<div class="overall">
+  <div class="overall-bar-wrap">
+    <div class="overall-top">
+      <span class="overall-label">Overall completion</span>
+      <span class="overall-pct" id="overallPct">0%</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="overallBar"></div></div>
+    <div class="phase-dots">
+      <div class="phase-dot"><div class="dot" id="dot-1"></div>Foundation</div>
+      <div class="phase-dot"><div class="dot" id="dot-2"></div>First wins</div>
+      <div class="phase-dot"><div class="dot" id="dot-3"></div>Build it in</div>
+      <div class="phase-dot"><div class="dot" id="dot-4"></div>Go deeper</div>
+    </div>
+  </div>
+</div>
+<div class="phases">
+  <div class="phase-card open is-active" id="card-1">
+    <div class="phase-head" onclick="togglePhase(1)">
+      <div class="phase-icon coral" id="icon-1">1</div>
+      <div class="phase-meta"><div class="phase-name">Phase 1 — Foundation</div><div class="phase-count" id="count-1">0 of 4 complete</div></div>
+      <div class="phase-chevron">&#8964;</div>
+    </div>
+    <div class="phase-mini-bar"><div class="phase-mini-fill coral" id="mini-1"></div></div>
+    <div class="checklist" id="list-1">
+      <div class="check-item" onclick="toggle(this,'p1')" data-phase="1"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I understand what Claude actually is</strong>Read Step 1.1 — the thinking partner mental model.</div></div>
+      <div class="check-item" onclick="toggle(this,'p1')" data-phase="1"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've completed the time audit</strong>Answered all three questions and written down my tasks.</div></div>
+      <div class="check-item" onclick="toggle(this,'p1')" data-phase="1"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I know the four rules before starting</strong>Context. Iteration. I'm the editor. Claude forgets.</div></div>
+      <div class="check-item" onclick="toggle(this,'p1')" data-phase="1"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've created my claude.ai account</strong>Free account set up and ready to go.</div></div>
+      <div class="phase-complete" id="done-1"><div class="phase-complete-icon">✦</div><p><strong>Phase 1 complete.</strong> You've done what most people skip. Time to run your first task — Phase 2 is waiting.</p></div>
+    </div>
+  </div>
+  <div class="phase-card" id="card-2">
+    <div class="phase-head" onclick="togglePhase(2)">
+      <div class="phase-icon sage" id="icon-2">2</div>
+      <div class="phase-meta"><div class="phase-name">Phase 2 — First wins</div><div class="phase-count" id="count-2">0 of 5 complete</div></div>
+      <div class="phase-chevron">&#8964;</div>
+    </div>
+    <div class="phase-mini-bar"><div class="phase-mini-fill sage" id="mini-2"></div></div>
+    <div class="checklist" id="list-2">
+      <div class="check-item" onclick="toggle(this,'p2')" data-phase="2"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've picked my first task from the audit</strong>The most painful one. Not the most interesting.</div></div>
+      <div class="check-item" onclick="toggle(this,'p2')" data-phase="2"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've written my first RACE prompt</strong>Role, Action, Context, Example — all four parts in one prompt.</div></div>
+      <div class="check-item" onclick="toggle(this,'p2')" data-phase="2"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've run my first task with Claude</strong>Opened claude.ai and sent my first real work prompt.</div></div>
+      <div class="check-item" onclick="toggle(this,'p2')" data-phase="2"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've refined the output at least once</strong>Asked Claude to adjust, sharpen, or rework something.</div></div>
+      <div class="check-item" onclick="toggle(this,'p2')" data-phase="2"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've used the output for something real</strong>Sent it. Published it. Presented it. Closed the loop.</div></div>
+      <div class="phase-complete" id="done-2"><div class="phase-complete-icon">✦</div><p><strong>Phase 2 complete.</strong> First win locked in. That's not nothing — most people never get this far. Phase 3 is where it becomes a system.</p></div>
+    </div>
+  </div>
+  <div class="phase-card" id="card-3">
+    <div class="phase-head" onclick="togglePhase(3)">
+      <div class="phase-icon steel" id="icon-3">3</div>
+      <div class="phase-meta"><div class="phase-name">Phase 3 — Build it in</div><div class="phase-count" id="count-3">0 of 7 complete</div></div>
+      <div class="phase-chevron">&#8964;</div>
+    </div>
+    <div class="phase-mini-bar"><div class="phase-mini-fill steel" id="mini-3"></div></div>
+    <div class="checklist" id="list-3">
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've created my playbook document</strong>A simple doc — Google Doc, Notion, anywhere — for saving prompts.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've saved at least one working prompt</strong>My first prompt is in the playbook, named and ready to reuse.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I know what I'm not automating</strong>I've identified the decisions and conversations that stay with me.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've committed to the 30-day habit</strong>One task per day. The goal is clear. The structure is mapped.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>Days 1–10 complete: Experiment</strong>I've tried Claude across different task types from my audit.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>Days 11–20 complete: Systematise</strong>Working prompts are saved. The playbook is growing. The habit is forming.</div></div>
+      <div class="check-item" onclick="toggle(this,'p3')" data-phase="3"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>Days 21–30 complete: Expand</strong>I've tested at least one new area. I know what Claude does better than I expected.</div></div>
+      <div class="phase-complete" id="done-3"><div class="phase-complete-icon">✦</div><p><strong>Phase 3 complete.</strong> Thirty days. A playbook. A habit. You're running a different business than the one you started with. Phase 4 is the next level.</p></div>
+    </div>
+  </div>
+  <div class="phase-card" id="card-4">
+    <div class="phase-head" onclick="togglePhase(4)">
+      <div class="phase-icon teal" id="icon-4">4</div>
+      <div class="phase-meta"><div class="phase-name">Phase 4 — Go deeper</div><div class="phase-count" id="count-4">0 of 3 complete</div></div>
+      <div class="phase-chevron">&#8964;</div>
+    </div>
+    <div class="phase-mini-bar"><div class="phase-mini-fill teal" id="mini-4"></div></div>
+    <div class="checklist" id="list-4">
+      <div class="check-item" onclick="toggle(this,'p4')" data-phase="4"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've joined the free community</strong>Inside Rachel's AI Head Quarters. <a href="https://www.skool.com/rachels-ai-head-quarters-9303" style="color:var(--teal);text-decoration:none">Join here if you haven't yet.</a></div></div>
+      <div class="check-item" onclick="toggle(this,'p4')" data-phase="4"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've picked my first module</strong>Chosen one tutorial from the library to go deep on next.</div></div>
+      <div class="check-item" onclick="toggle(this,'p4')" data-phase="4"><div class="check-box"><span class="check-tick">✓</span></div><div class="check-text"><strong>I've shared my first win in the community</strong>Posted what worked. Named the task, the prompt, the result.</div></div>
+      <div class="phase-complete" id="done-4"><div class="phase-complete-icon">✦</div><p><strong>All four phases complete.</strong> You've built the foundation, logged the wins, built the system, and joined the room. Ready to go further? <a href="https://niscallyai.netlify.app/" style="color:var(--sage);text-decoration:none">Book your AI Audit and get your system built for you.</a></p></div>
+    </div>
+  </div>
+</div>
+<div class="win-section">
+  <div class="win-card">
+    <h3>Capture your wins</h3>
+    <p>Record your first real result with Claude. The more specific, the more useful it becomes — for you and for others in the community.</p>
+    <textarea class="win-input" id="win1" placeholder="My first win: what the task was, what I asked Claude, what the result was..." oninput="saveWins()"></textarea>
+    <textarea class="win-input" id="win2" placeholder="A prompt that worked: what it was and why it landed..." oninput="saveWins()"></textarea>
+  </div>
+</div>
+<div style="max-width:740px;margin:2rem auto 0;padding:0 2rem">
+  <div style="background:rgba(204,106,72,0.06);border:0.5px solid rgba(204,106,72,0.25);border-radius:10px;padding:1.75rem;text-align:center">
+    <div style="font-size:10px;font-weight:500;color:var(--coral);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">Next level</div>
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:var(--cream);margin-bottom:0.6rem">Want it done for you?</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:1.25rem">The AI Audit is a focused 60-minute session where we map your business and identify exactly where AI will have the biggest impact. You leave with clarity. We leave with everything we need to build your system.</div>
+    <a href="https://niscallyai.netlify.app/" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:0.5px solid rgba(204,106,72,0.5);border-radius:5px;padding:9px 18px;color:var(--coral);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;">Book your AI Audit — £97 →</a>
+    <div style="font-size:12px;color:var(--muted-2);margin-top:0.75rem">60 minutes &nbsp;·&nbsp; Done-for-you AI setup &nbsp;·&nbsp; Niscally AI</div>
+  </div>
+</div>
+<div class="tracker-footer"><p>Powered by <span>Claude AI</span> &nbsp;·&nbsp; Part of the AI Integration Playbook &nbsp;·&nbsp; Free community resource</p></div>
+<script>
+var TOTALS=[4,5,7,3];
+var state={checks:[[false,false,false,false],[false,false,false,false,false],[false,false,false,false,false,false,false],[false,false,false]],open:[true,false,false,false]};
+(function init(){try{var s=localStorage.getItem('aitracker');if(s){var p=JSON.parse(s);if(p.checks)state.checks=p.checks;if(p.open)state.open=p.open;}var n=localStorage.getItem('aitracker_name');if(n)document.getElementById('userName').value=n;var w1=localStorage.getItem('aitracker_w1');var w2=localStorage.getItem('aitracker_w2');if(w1)document.getElementById('win1').value=w1;if(w2)document.getElementById('win2').value=w2;}catch(e){}renderAll();})();
+function saveState(){try{localStorage.setItem('aitracker',JSON.stringify(state));}catch(e){}}
+function saveName(){try{localStorage.setItem('aitracker_name',document.getElementById('userName').value);}catch(e){}}
+function saveWins(){try{localStorage.setItem('aitracker_w1',document.getElementById('win1').value);localStorage.setItem('aitracker_w2',document.getElementById('win2').value);}catch(e){}}
+function toggle(el){if(el.classList.contains('checked')){el.classList.remove('checked');}else{el.classList.add('checked');}for(var p=1;p<=4;p++){var items=document.querySelectorAll('#list-'+p+' .check-item');for(var i=0;i<items.length;i++){state.checks[p-1][i]=items[i].classList.contains('checked');}}saveState();updateProgress();}
+function togglePhase(n){state.open[n-1]=!state.open[n-1];renderAll();saveState();}
+function renderAll(){for(var p=1;p<=4;p++){var card=document.getElementById('card-'+p);var list=document.getElementById('list-'+p);var items=list.querySelectorAll('.check-item');for(var i=0;i<items.length;i++){if(state.checks[p-1]&&state.checks[p-1][i]){items[i].classList.add('checked');}else{items[i].classList.remove('checked');}}if(state.open[p-1]){card.classList.add('open');}else{card.classList.remove('open');}}updateProgress();}
+function updateProgress(){var total=0,done=0;for(var p=1;p<=4;p++){var pTotal=TOTALS[p-1];var pDone=0;var items=document.querySelectorAll('#list-'+p+' .check-item');for(var i=0;i<items.length;i++){if(items[i].classList.contains('checked'))pDone++;}total+=pTotal;done+=pDone;var pct=pTotal>0?Math.round((pDone/pTotal)*100):0;document.getElementById('mini-'+p).style.width=pct+'%';document.getElementById('count-'+p).textContent=pDone+' of '+pTotal+' complete';var doneBanner=document.getElementById('done-'+p);if(pDone===pTotal){doneBanner.classList.add('show','celebrate');document.getElementById('card-'+p).classList.add('is-done');document.getElementById('card-'+p).classList.remove('is-active');document.getElementById('icon-'+p).className='phase-icon complete';document.getElementById('icon-'+p).textContent='✓';document.getElementById('dot-'+p).className='dot done';}else{doneBanner.classList.remove('show');document.getElementById('card-'+p).classList.remove('is-done');if(pDone>0){document.getElementById('card-'+p).classList.add('is-active');document.getElementById('dot-'+p).className='dot active';}else{document.getElementById('card-'+p).classList.remove('is-active');document.getElementById('dot-'+p).className='dot';}}}var overallPct=total>0?Math.round((done/total)*100):0;document.getElementById('overallPct').textContent=overallPct+'%';document.getElementById('overallBar').style.width=overallPct+'%';}
+</script>
+</body>
+</html>

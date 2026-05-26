@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niscally AI — Save time. Make money. Optimise AI for your business.</title>
+  <meta name="description" content="AI education and tools for people building a business or career. Live workshops, free resources, and a community that shares what's actually working." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg:       #1A1916;
+      --surface:  #242220;
+      --accent:   #CC6A48;
+      --text:     #F0EBE2;
+      --muted:    #9E9991;
+      --border:   rgba(240, 235, 226, 0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    nav {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-cta:hover { opacity: 0.75; }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    /* ── WORKSHOP SECTION ── */
+    .workshop {
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+
+    .workshop h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+
+    .workshop-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-item {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .meta-item span {
+      color: var(--text);
+    }
+
+    .workshop p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+    }
+
+    .workshop p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .workshop-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      margin: 2rem 0 0.5rem;
+    }
+
+    .workshop-price .original {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-right: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      margin-top: 1.75rem;
+      background-color: var(--accent);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      border-radius: 3px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-note {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+
+    /* ── WHAT YOU'LL GET ── */
+    .outcomes {
+      padding: 5rem 2rem;
+    }
+
+    .outcomes h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .outcome-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .outcome-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .outcome-list li::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* ── RESOURCES ── */
+    .resources {
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 2rem;
+    }
+
+    .resources h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .resources .intro {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .resource-card {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+    }
+
+    .resource-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .resource-card p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+      line-height: 1.7;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-secondary:hover { opacity: 0.7; }
+
+    /* ── COMMUNITY ── */
+    .community {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .community h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      margin-bottom: 1rem;
+    }
+
+    .community p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 5rem 2rem;
+    }
+
+    .about-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .about p {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .about p strong { color: var(--text); font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    /* ── RESOURCE FORMS ── */
+    .resource-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .resource-form input[type="email"] {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .resource-form input[type="email"]::placeholder { color: var(--muted); }
+    .resource-form input[type="email"]:focus { border-color: var(--accent); }
+
+    .resource-form button {
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 3px;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-align: left;
+    }
+
+    .resource-form button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 1.25rem 1.25rem; }
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      .workshop, .outcomes, .resources, .community, .about { padding: 3.5rem 1.25rem; }
+      footer { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/niscally" class="nav-logo">Niscally AI</a>
+    <a href="https://buy.stripe.com/28E3cwc8JeKr1Lf8Dt3wQ00" class="nav-cta">Book the workshop →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Niscally AI</p>
+    <h1>Save time.<br>Make money.<br>Optimise AI for your business.</h1>
+    <p>Practical AI education for people building something. No tech background needed. No theory. Just what works.</p>
+    <a href="https://buy.stripe.com/28E3cwc8JeKr1Lf8Dt3wQ00" class="btn-primary">Book the workshop — £19.99</a>
+    <span class="btn-note">Live on Zoom · Friday 29 May · 7pm</span>
+  </section>
+
+  <!-- WORKSHOP -->
+  <section class="workshop">
+    <div class="section-inner">
+      <span class="tag">Live Workshop</span>
+      <h2>Your AI Operating System</h2>
+      <div class="workshop-meta">
+        <p class="meta-item">Date: <span>Friday 29 May 2026</span></p>
+        <p class="meta-item">Time: <span>7pm UK</span></p>
+        <p class="meta-item">Format: <span>90 mins · Live Zoom</span></p>
+        <p class="meta-item">Price: <span>£19.99</span></p>
+      </div>
+
+      <p>Most people use AI like a search engine. One question. One answer. Done. That's not an operating system. That's a party trick.</p>
+
+      <p>An operating system means AI is woven into how you actually work. Research. Content. Planning. Client communication. Admin. <strong>All of it — faster, better, less draining.</strong></p>
+
+      <p>In 90 minutes I'll show you the exact workflows I use to run two businesses. Screen-share. Real work. Live questions. You'll leave with a system you can implement the same week.</p>
+
+      <p>This is for you if you're already using AI occasionally and want to use it properly. Or if you've tried it and given up because it wasn't giving you real results.</p>
+
+      <div class="workshop-price">£19.99</div>
+
+      <a href="https://buy.stripe.com/28E3cwc8JeKr1Lf8Dt3wQ00" class="btn-primary">Book your seat</a>
+      <span class="btn-note">Secure checkout via Stripe · Zoom link sent by email</span>
+    </div>
+  </section>
+
+  <!-- OUTCOMES -->
+  <section class="outcomes">
+    <div class="section-inner">
+      <h3>What you'll leave with</h3>
+      <ul class="outcome-list">
+        <li>The four-phase framework for building AI into your existing workflow — without starting from scratch</li>
+        <li>The prompts and tools I actually use daily to run research, content, planning, and client work</li>
+        <li>A clear picture of where AI saves the most time in your specific type of work</li>
+        <li>Live answers to your questions — this is a workshop, not a recording</li>
+        <li>Access to the replay if you can't make it live</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="resources">
+    <div class="section-inner">
+      <h2>Two free resources to get you started</h2>
+      <p class="intro">Download these before the workshop. They're the foundation we'll build on together.</p>
+
+      <div class="resource-grid">
+        <div class="resource-card">
+          <h3>AI Integration Playbook</h3>
+          <p>A four-phase guide to building AI into how you already work. Where to start, what to tackle first, and how to stop wasting time on the wrong things.</p>
+          <form action="https://formspree.io/f/xvzyvrea" method="POST" class="resource-form">
+            <input type="hidden" name="_next" value="https://rachelakinsanya.com/playbook.html" />
+            <input type="hidden" name="_subject" value="New download — AI Integration Playbook" />
+            <input type="hidden" name="resource" value="AI Integration Playbook" />
+            <input type="email" name="email" placeholder="Your email address" required />
+            <button type="submit">Get the Playbook →</button>
+          </form>
+        </div>
+
+        <div class="resource-card">
+          <h3>AI Progress Tracker</h3>
+          <p>19 checkpoints across four phases. Track what you've actually built into your workflow. Know where you are and what comes next.</p>
+          <form action="https://formspree.io/f/xvzyvrea" method="POST" class="resource-form">
+            <input type="hidden" name="_next" value="https://rachelakinsanya.com/tracker.html" />
+            <input type="hidden" name="_subject" value="New download — AI Progress Tracker" />
+            <input type="hidden" name="resource" value="AI Progress Tracker" />
+            <input type="email" name="email" placeholder="Your email address" required />
+            <button type="submit">Get the Tracker →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="community">
+    <div class="section-inner">
+      <h2>Join the free community</h2>
+      <p>Rachel's AI HQ is where we share what's actually working. Prompts, workflows, tools, results. Free to join.</p>
+      <a href="https://www.skool.com/rachels-ai-head-quarters-9303" class="btn-primary" target="_blank" rel="noopener">Join on Skool — free</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="about-inner">
+      <h2>Rachel Akinsanya</h2>
+      <p>I run two businesses simultaneously — NEXTSTEP Coaching and Niscally AI. Both operate on a 15-hour week. That's only possible because of how I use AI.</p>
+      <p>I'm not a developer. I didn't come from tech. <strong>I came from needing to do more with less time</strong> — and figured out that AI, used intentionally, is the most practical way to get there.</p>
+      <p>Niscally AI is where I share what I've learned. Practical. Tested. Built for people who are already busy and just need it to work.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Niscally AI · Rachel Akinsanya</p>
+    <a href="/">rachelakinsanya.com</a>
+  </footer>
+
+</body>
+</html>
