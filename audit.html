@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Niscally AI — AI Audit for Small Business Owners</title>
+  <meta name="description" content="A focused 60-minute AI Audit for business owners who are ready to stop figuring it out alone. We map your business, identify where AI closes the gap, and build it for you." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #1A1916;
+      --surface:  #242220;
+      --accent:   #CC6A48;
+      --text:     #F0EBE2;
+      --muted:    #9E9991;
+      --border:   rgba(240, 235, 226, 0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav a.nav-cta {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+
+    nav a.nav-cta:hover { opacity: 0.88; text-decoration: none; }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 96px 48px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    section.full-width {
+      max-width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 48px 96px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: var(--text);
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin-bottom: 44px;
+      line-height: 1.8;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 16px 36px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary:hover { opacity: 0.88; text-decoration: none; }
+
+    .hero-note {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 48px;
+    }
+
+    /* ── PROBLEM ── */
+    .problem h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 32px;
+    }
+
+    .problem p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+
+    .problem p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── SOLUTION ── */
+    .solution {
+      background: var(--surface);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .solution-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 96px 48px;
+    }
+
+    .solution h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 28px;
+    }
+
+    .solution p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+
+    .solution p strong { color: var(--text); font-weight: 500; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      gap: 2px;
+      margin-top: 24px;
+    }
+
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .step-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      padding-top: 4px;
+    }
+
+    .step h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .step .price-tag {
+      display: inline-block;
+      background: rgba(204, 106, 72, 0.12);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── WHO IT'S FOR ── */
+    .for-you h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 32px;
+    }
+
+    .for-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .for-item {
+      border-left: 2px solid var(--accent);
+      padding: 16px 24px;
+      background: var(--surface);
+      border-radius: 0 4px 4px 0;
+      color: var(--muted);
+      font-size: 0.97rem;
+      line-height: 1.65;
+    }
+
+    .for-item strong { color: var(--text); font-weight: 500; }
+
+    /* ── WHY NISCALLY AI ── */
+    .why {
+      background: var(--surface);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 96px 48px;
+    }
+
+    .why h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 28px;
+    }
+
+    .why p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+
+    .why p strong { color: var(--text); font-weight: 500; }
+
+    .proof-block {
+      margin-top: 40px;
+      border-left: 2px solid var(--accent);
+      padding: 24px 32px;
+      background: rgba(204, 106, 72, 0.06);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .proof-block p {
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 12px;
+      max-width: 100%;
+    }
+
+    .proof-block p:last-child { margin-bottom: 0; }
+
+    .proof-block a {
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* ── ARTICLES ── */
+    .articles h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      margin-bottom: 12px;
+    }
+
+    .articles .section-sub {
+      color: var(--muted);
+      margin-bottom: 44px;
+      max-width: 520px;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 32px;
+      transition: border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article-card:hover { border-color: rgba(204, 106, 72, 0.4); }
+
+    .article-card .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .article-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .article-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .article-card .coming-soon {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .article-card .read-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .article-card .read-link:hover { text-decoration: underline; }
+
+    /* ── COMMUNITY ── */
+    .community {
+      background: var(--surface);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .community-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      text-align: center;
+    }
+
+    .community h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 16px;
+    }
+
+    .community p {
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-size: 1rem;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .community p + p { margin-top: -16px; }
+
+    .community-note {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT FORM ── */
+    .contact {
+      background: var(--bg);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 96px 48px;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      margin-bottom: 16px;
+    }
+
+    .contact .contact-sub {
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-size: 1rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-form {
+      text-align: left;
+      display: grid;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    .form-group select option { background: var(--surface); }
+
+    .form-submit {
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    .form-submit button {
+      width: 100%;
+      padding: 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    /* ── SUCCESS MESSAGE ── */
+    .success-msg {
+      display: none;
+      background: rgba(204, 106, 72, 0.1);
+      border: 1px solid rgba(204, 106, 72, 0.3);
+      border-radius: 6px;
+      padding: 32px;
+      text-align: center;
+      color: var(--text);
+      margin-top: 16px;
+    }
+
+    .success-msg p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer .logo { font-size: 1rem; }
+
+    footer p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      nav { padding: 20px 24px; }
+      section, .hero { padding: 72px 24px; }
+      .solution-inner, .why-inner, .contact-inner, .community-inner { padding: 72px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+      .step { grid-template-columns: 1fr; }
+      .step-number { font-size: 1.5rem; }
+      .divider { margin: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Niscally<span>AI</span></div>
+    <a href="#contact" class="nav-cta">Book your AI Audit — £97</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="label">Done For You AI Setup</div>
+    <h1>AI just got smarter.<br><em>The businesses that move now</em><br>will be impossible to catch.</h1>
+    <p>We set up your AI-powered Personal Assistant — built around your business, ready to use from day one. No tech knowledge needed. No figuring it out alone. We handle everything.</p>
+    <a href="#contact" class="btn-primary">Book your AI Audit — £97</a>
+    <p class="hero-note">60 minutes. No obligation to go further. Just clarity on exactly where AI changes things for you.</p>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="label">The Problem</div>
+    <h2>Every week you wait, someone in your industry isn't.</h2>
+    <p>They're responding faster. Following up better. Getting through their admin in half the time. <strong>Not because they're smarter. Because they set up the right system and got on with it.</strong></p>
+    <p>You've seen what AI can do. You've probably tried a tool or two. But every time you sit down to actually make it work for your business — something more urgent takes over.</p>
+    <p>So it doesn't happen. And the manual work carries on. The emails pile up. The follow-ups fall through. The hours disappear into tasks that shouldn't need you.</p>
+    <p>The problem is never motivation. It's that building this alone costs more time than you have. <strong>That's exactly what we fix.</strong></p>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SOLUTION -->
+  <div class="solution">
+    <div class="solution-inner">
+      <div class="label">The Solution</div>
+      <h2>Your AI-powered Personal Assistant. Built for your business. Not someone else's.</h2>
+      <p>Not a generic tool. Not a course to work through at the weekend. <strong>A working system configured around how you actually operate</strong> — your clients, your workflow, your week.</p>
+      <p>We take the time to understand your business. We build the system. We hand it over with a full walkthrough so you know exactly how to use it. You get your time back. We handle the setup.</p>
+      <p>Integrating AI into your business now is not a nice-to-have. It is what separates the businesses that scale from the ones that stay stuck in the weeds.</p>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="label">How It Works</div>
+    <h2>Four steps. Less than a week.</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-number">01</div>
+        <div>
+          <div class="price-tag">£97 — confirmed on booking</div>
+          <h3>The AI Audit</h3>
+          <p>A focused 60-minute session. You walk us through how your business runs — the tasks, the tools, the time drains. We identify exactly where an AI-powered Personal Assistant will have the biggest impact. You leave with clarity. We leave with everything we need to build your proposal.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <div>
+          <h3>Your Custom Quote</h3>
+          <p>Based on the audit, we build your setup proposal. You see the full scope and cost before committing to anything further. No surprises. No pressure. Every quote is unique because every business is different.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <div>
+          <h3>We Build It</h3>
+          <p>Your AI-powered Personal Assistant is configured, tested, and handed over with a full walkthrough. You'll know exactly what it does, how to use it, and how to get the most out of it from day one. Remote delivery as standard. In-person sessions available for teams.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">04</div>
+        <div>
+          <h3>We Stay Close</h3>
+          <p>Optional quarterly check-ins to keep your system sharp as your business evolves. New needs, new automations — we handle it. Your business changes. Your AI should too.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- WHO IT'S FOR -->
+  <section class="for-you">
+    <div class="label">Who This Is For</div>
+    <h2>You don't need to be technical.<br>You need to be ready.</h2>
+    <div class="for-list">
+      <div class="for-item"><strong>Busy business owners</strong> running everything themselves who know something has to change — but haven't had the time or support to change it.</div>
+      <div class="for-item"><strong>People who've tried AI tools</strong> and given up. Felt overwhelmed. Closed the tab. You're not missing something. You just needed the right setup from the start.</div>
+      <div class="for-item"><strong>Anyone watching competitors move faster</strong> and wondering how. The answer is usually a working system, not more effort.</div>
+      <div class="for-item"><strong>Senior professionals and business owners</strong> who would rather spend their time running their business than learning technology. That's exactly what we're here for.</div>
+      <div class="for-item"><strong>People who've read about AI, heard about it, maybe even booked a session once</strong> — but still haven't done anything with it. Not because they didn't want to. Because doing it alone felt like more work than it saved.</div>
+    </div>
+  </section>
+
+  <!-- WHY NISCALLY AI -->
+  <div class="why">
+    <div class="why-inner">
+      <div class="label">Why Niscally AI</div>
+      <h2>We use what we build.<br>We only show real results.</h2>
+      <p>Niscally AI exists for one reason: to make AI work for real businesses, not just the ones with a tech team.</p>
+      <p><strong>Every system we build is one we use ourselves.</strong> Every result we talk about is one we've delivered. We don't teach theory. We implement and document what actually happens.</p>
+      <p>The businesses getting ahead right now are not waiting for AI to become simpler. They're getting set up while their competitors are still hesitating.</p>
+      <p>The window is open. It will not stay open indefinitely.</p>
+
+      <div class="proof-block">
+        <p><strong>Niscally AI was built using the exact system we sell.</strong></p>
+        <p>In one week — at limited capacity, running two other businesses — a brand, a working site, a service offer, a pricing model, a strategy document, and client resources were built and launched. Not because there was suddenly more time. Because the system handled everything that didn't require a decision, and what remained got done.</p>
+        <p>That is what the right setup does. And that's what we build for you.</p>
+        <a href="https://racheltalksai.substack.com/p/i-built-a-company-in-a-week" target="_blank" rel="noopener">Read the full story →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLES -->
+  <section class="articles">
+    <div class="label">AI In Practice</div>
+    <h2>What it actually looks like.</h2>
+    <p class="section-sub">Real examples. Real businesses. No theory.</p>
+    <div class="article-grid">
+
+      <div class="article-card">
+        <div class="tag">Case Study</div>
+        <h3>I Built A New Company In A Week</h3>
+        <p>When I was down with a health crisis and two businesses on my plate, I stopped using AI like a tool and started using it like infrastructure. Here is what happened.</p>
+        <a href="https://racheltalksai.substack.com/p/i-built-a-company-in-a-week" target="_blank" rel="noopener" class="read-link">Read the full story →</a>
+      </div>
+
+      <div class="article-card">
+        <div class="tag">In Practice</div>
+        <h3>The five manual tasks I no longer do — and what I use instead</h3>
+        <p>Not a pitch. A list of the specific things that used to take hours and now take minutes, and exactly how that happened.</p>
+        <span class="coming-soon">Article coming soon</span>
+      </div>
+
+      <div class="article-card">
+        <div class="tag">For Business Owners</div>
+        <h3>You don't need to understand AI to benefit from it</h3>
+        <p>What a plumber, a consultant, and a marketing agency all had in common — and what changed when they stopped trying to figure it out alone.</p>
+        <span class="coming-soon">Article coming soon</span>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- COMMUNITY -->
+  <div class="community">
+    <div class="community-inner">
+      <div class="label">Free Community</div>
+      <h2>Rachel's AI Head Quarters</h2>
+      <p>Where operators and founders share what is actually working. Prompts, workflows, tools, results. No theory. No noise. Just people building with AI and documenting what happens.</p>
+      <a href="https://www.skool.com/rachels-ai-head-quarters-9303" target="_blank" rel="noopener" class="btn-primary">Join free on Skool</a>
+      <p class="community-note">Free to join. No credit card.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="label">Book Your Audit</div>
+      <h2>60 minutes. £97.<br>Let's map your business.</h2>
+      <p class="contact-sub">Tell us a little about where your time is going. We'll confirm your slot within one working day and send your payment link.</p>
+
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/xbdbalwk"
+        method="POST"
+        id="auditForm"
+      >
+        <input type="hidden" name="source" value="AI Audit — /audit page" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+          </div>
+          <div class="form-group">
+            <label for="business">Business Name</label>
+            <input type="text" id="business" name="business" placeholder="Smith & Co." required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="jane@smithandco.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type of Business</label>
+          <select id="type" name="business_type">
+            <option value="" disabled selected>Select one</option>
+            <option>Sole trader / freelancer</option>
+            <option>Small business (2–10 people)</option>
+            <option>Growing business (10+ people)</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="challenge">What's taking up most of your time right now?</label>
+          <textarea id="challenge" name="challenge" placeholder="Tell us where the hours are going — emails, admin, client follow-ups, scheduling..."></textarea>
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-primary">Request My AI Audit — £97</button>
+        </div>
+        <p class="form-note">We'll confirm your slot within one working day and send your payment link.</p>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        <strong>Request received.</strong>
+        <p>We'll be in touch within one working day to confirm your slot and send your payment link.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Niscally<span>AI</span></div>
+    <p>© 2026 Niscally AI. All rights reserved.</p>
+    <p><a href="http://rachelakinsanya.com" style="color: var(--muted); font-size: 0.82rem;">rachelakinsanya.com</a></p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('auditForm');
+    const successMsg = document.getElementById('successMsg');
+
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+          } else {
+            const data = await response.json();
+            const errorText = data.errors
+              ? data.errors.map(e => e.message).join(', ')
+              : 'Something went wrong. Please email us directly.';
+            alert(errorText);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
+        } catch (err) {
+          alert('Could not send your request. Please try again or email us directly.');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
